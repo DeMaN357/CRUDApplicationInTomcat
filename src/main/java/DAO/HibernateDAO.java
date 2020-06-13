@@ -2,6 +2,7 @@ package DAO;
 
 import model.User;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
 //import javax.management.Query;
@@ -11,14 +12,15 @@ import java.sql.SQLException;
 import java.util.List;
 
 public class HibernateDAO implements UserDAO {
-    private static Session session;
+    private static SessionFactory sessionFactory;
 
-    public HibernateDAO(Session session) {
-        this.session = session;
+    public HibernateDAO(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
     }
 
     @Override
     public List<User> getAllUser() throws SQLException {
+        Session session = sessionFactory.openSession();
         Transaction transaction = session.beginTransaction();
         List<User> userList = session.createQuery("from User", User.class).list();
         transaction.commit();
@@ -28,6 +30,7 @@ public class HibernateDAO implements UserDAO {
 
     @Override
     public boolean addUser(User user) throws SQLException {
+        Session session = sessionFactory.openSession();
         Transaction transaction = session.beginTransaction();
         session.save(user);
         transaction.commit();
@@ -37,6 +40,7 @@ public class HibernateDAO implements UserDAO {
 
     @Override
     public void deleteUser(User user) throws SQLException {
+        Session session = sessionFactory.openSession();
         Transaction transaction = session.beginTransaction();
         session.delete(user);
         transaction.commit();
@@ -45,6 +49,7 @@ public class HibernateDAO implements UserDAO {
 
     @Override
     public boolean updateUser(User newUser) throws SQLException {
+        Session session = sessionFactory.openSession();
         Transaction transaction = session.beginTransaction();
         session.update(newUser);
         transaction.commit();
@@ -54,6 +59,7 @@ public class HibernateDAO implements UserDAO {
 
     @Override
     public boolean checkUser(String name) throws SQLException {
+        Session session = sessionFactory.openSession();
         Transaction transaction = session.beginTransaction();
         Query<User> userQuery = session.createQuery("from User where name = :name", User.class);
         userQuery.setParameter("name", name);
@@ -65,6 +71,7 @@ public class HibernateDAO implements UserDAO {
 
     @Override
     public User getUserById(Long id) throws SQLException {
+        Session session = sessionFactory.openSession();
         Transaction transaction = session.beginTransaction();
         Query<User> userQuery = session.createQuery("from User where id = :id", User.class);
         userQuery.setParameter("id", id);

@@ -2,6 +2,7 @@ package service;
 
 import DAO.HibernateDAO;
 import DAO.UserDAO;
+import DAO.UserDaoFactory;
 import DAO.UserJdbcDAO;
 import model.User;
 import org.hibernate.SessionFactory;
@@ -21,34 +22,22 @@ public class UserService {
 
     private static UserService userService;
 
+    private static  UserDAO userDAO;
+
+    private UserService(UserDAO userDAO){
+        this.userDAO = userDAO;
+    }
+
     public static UserService getInstance() {
         if (userService == null) {
-            userService = new UserService();
+            userService = new UserService(UserDaoFactory.getFactory());
         }
         return userService;
     }
 
-    private UserDAO getConnectionToBase() {
-        try {
-            Properties properties = new Properties();
-            properties.load(UserService.class.getClassLoader().getResourceAsStream("selectImplementation.properties"));
-
-            String typeBase = properties.getProperty("typeBase");
-            if (typeBase.equals("jdbc")) {
-                return getUserJdbcDAO();
-            } else if (typeBase.equals("hibernate")) {
-                return getHibernateDAO();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-            throw new IllegalStateException();
-        }
-        return null;
-    }
-
     public List<User> getAllUser() {
         try {
-            return getConnectionToBase().getAllUser();
+            return userDAO.getAllUser();
         } catch (SQLException e) {
             e.printStackTrace();
             return null;
@@ -57,10 +46,10 @@ public class UserService {
 
     public boolean addUser(User user) {
         try {
-            if (getConnectionToBase().checkUser(user.getName())) {
+            if (userDAO.checkUser(user.getName())) {
                 return false;
             } else {
-                return getConnectionToBase().addUser(user);
+                return userDAO.addUser(user);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -70,7 +59,7 @@ public class UserService {
 
     public void deleteUser(User user) {
         try {
-            getConnectionToBase().deleteUser(user);
+            userDAO.deleteUser(user);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -78,10 +67,10 @@ public class UserService {
 
     public boolean updateUser(User newUser) {
         try {
-            if(getConnectionToBase().checkUser(newUser.getName())){
+            if (userDAO.checkUser(newUser.getName())) {
                 return false;
-            }else{
-                return getConnectionToBase().updateUser(newUser);
+            } else {
+                return userDAO.updateUser(newUser);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -91,70 +80,10 @@ public class UserService {
 
     public User getUserById(Long id) {
         try {
-            return getConnectionToBase().getUserById(id);
+            return userDAO.getUserById(id);
         } catch (SQLException e) {
             e.printStackTrace();
             return null;
         }
     }
-
-    private static Connection getMySqlConnection() {
-        try {
-            DriverManager.registerDriver((Driver) Class.forName("com.mysql.jdbc.Driver").newInstance());
-
-            Properties properties = new Properties();
-            properties.load(UserService.class.getClassLoader().getResourceAsStream("JDBC.properties"));
-
-            String url = properties.getProperty("url");
-            String username = properties.getProperty("username");
-            String password = properties.getProperty("password");
-
-            Connection connection = DriverManager.getConnection(url, username, password);
-            return connection;
-        } catch (SQLException | InstantiationException | IllegalAccessException | ClassNotFoundException | IOException e) {
-            e.printStackTrace();
-            throw new IllegalStateException();
-        }
-    }
-
-    private static UserJdbcDAO getUserJdbcDAO() {
-        return new UserJdbcDAO(getMySqlConnection());
-    }
-
-    private static HibernateDAO getHibernateDAO() {
-        return new HibernateDAO(getSessionFactory().openSession());
-    }
-
-    private static SessionFactory sessionFactory;
-
-    public static SessionFactory getSessionFactory() {
-        if (sessionFactory == null) {
-            sessionFactory = createSessionFactory();
-        }
-        return sessionFactory;
-    }
-
-    private static SessionFactory createSessionFactory() {
-        Configuration configuration = getMySqlConfiguration();
-        StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder();
-        builder.applySettings(configuration.getProperties());
-        ServiceRegistry serviceRegistry = builder.build();
-        return configuration.buildSessionFactory(serviceRegistry);
-    }
-
-    @SuppressWarnings("UnusedDeclaration")
-    private static Configuration getMySqlConfiguration() {
-        Configuration configuration = new Configuration();
-        configuration.addAnnotatedClass(User.class);
-
-        try {
-            Properties properties = new Properties();
-            properties.load(UserService.class.getClassLoader().getResourceAsStream("hibernate.properties"));
-            configuration.setProperties(properties);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return configuration;
-    }
-
 }
