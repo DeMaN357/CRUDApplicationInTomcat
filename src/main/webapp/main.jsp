@@ -15,7 +15,7 @@
             <td>${users.password}</td>
             <td>
                 <a href="${pageContext.request.contextPath}/delete?idToDelete=${users.id}">Delete</a>
-                <a href="${pageContext.request.contextPath}/update?idToUpdate=${users.id}&name=${users.name}&password=${users.password}">Update</a>
+                <a href="${pageContext.request.contextPath}/update?idToUpdate=${users.id}">Update</a>
             </td>
         </tr>
 

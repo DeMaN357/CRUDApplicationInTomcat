@@ -12,14 +12,13 @@
     <title>Update User</title>
 </head>
 <body>
-    <form action="${pageContext.request.contextPath}/update" method="post">
-        <c:set var="user" scope="request" value="${user}" />
-        <input type="hidden" name="oldName" value="${user.name}"/>
-        <input type="hidden" name="oldPassword" value="${user.password}"/>
-        Enter your new Name: <input type="text" name="name" value="${user.name}"/>
-        Enter your new Password: <input type="password" name="password" value="${user.password}"/>
-        <input type="submit" value="Update"/>
-    </form>
+<form action="${pageContext.request.contextPath}/update" method="post">
+    <c:set var="user" scope="request" value="${user}"/>
+    <input type="hidden" name="oldId" value="${user.id}"/>
+    Enter your new Name: <input type="text" name="name" value="${user.name}"/>
+    Enter your new Password: <input type="password" name="password" value="${user.password}"/>
+    <input type="submit" value="Update"/>
+</form>
 
 </body>
 </html>
