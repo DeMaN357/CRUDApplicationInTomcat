@@ -67,11 +67,12 @@ public class UserService {
 
     public boolean updateUser(User newUser) {
         try {
-            if (userDAO.checkUser(newUser.getName())) {
-                return false;
-            } else {
+            if(newUser.getName().equals(getUserById(newUser.getId()).getName())){
                 return userDAO.updateUser(newUser);
+            }else if(userDAO.checkUser(newUser.getName())){
+                return false;
             }
+            return userDAO.updateUser(newUser);
         } catch (SQLException e) {
             e.printStackTrace();
             return false;

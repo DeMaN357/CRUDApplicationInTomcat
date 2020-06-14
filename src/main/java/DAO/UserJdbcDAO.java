@@ -73,7 +73,7 @@ public class UserJdbcDAO implements UserDAO {
         String query = "UPDATE user SET name=?, password=? where id=?";
 
         try (PreparedStatement ps = connection.prepareStatement(query)) {
-            ps.setString(1, newUser.getName());
+            ps.setString(1,newUser.getName());
             ps.setString(2, newUser.getPassword());
             ps.setLong(3, newUser.getId());
             return ps.executeUpdate() > 0;
