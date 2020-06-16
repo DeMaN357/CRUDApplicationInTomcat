@@ -13,16 +13,17 @@
             <td>${users.id}</td>
             <td>${users.name}</td>
             <td>${users.password}</td>
+            <td>${users.role}</td>
             <td>
-                <a href="${pageContext.request.contextPath}/delete?idToDelete=${users.id}">Delete</a>
-                <a href="${pageContext.request.contextPath}/update?idToUpdate=${users.id}">Update</a>
+                <a href="${pageContext.request.contextPath}/admin/delete?idToDelete=${users.id}">Delete</a>
+                <a href="${pageContext.request.contextPath}/admin/update?idToUpdate=${users.id}">Update</a>
             </td>
         </tr>
 
     </c:forEach>
 </table>
 
-<form action="${pageContext.request.contextPath}/AddUser" method="get">
+<form action="${pageContext.request.contextPath}/admin/AddUser" method="get">
     <input type="submit" value="Add User"/>
 </form>
 </body>

@@ -12,7 +12,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-@WebServlet(value = "/AllUsers")
+@WebServlet(value = "/admin/AllUsers")
 public class MainServlet extends HttpServlet {
     UserService userService = UserService.getInstance();
 

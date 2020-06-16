@@ -22,9 +22,9 @@ public class UserService {
 
     private static UserService userService;
 
-    private static  UserDAO userDAO;
+    private static UserDAO userDAO;
 
-    private UserService(UserDAO userDAO){
+    private UserService(UserDAO userDAO) {
         this.userDAO = userDAO;
     }
 
@@ -67,9 +67,9 @@ public class UserService {
 
     public boolean updateUser(User newUser) {
         try {
-            if(newUser.getName().equals(getUserById(newUser.getId()).getName())){
+            if (newUser.getName().equals(getUserById(newUser.getId()).getName())) {
                 return userDAO.updateUser(newUser);
-            }else if(userDAO.checkUser(newUser.getName())){
+            } else if (userDAO.checkUser(newUser.getName())) {
                 return false;
             }
             return userDAO.updateUser(newUser);
@@ -83,6 +83,16 @@ public class UserService {
         try {
             return userDAO.getUserById(id);
         } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+
+    public User getUserByNameAndPassword(String name, String password) {
+        try {
+            return userDAO.getUserByNameAndPassword(name, password);
+        }catch (SQLException e){
             e.printStackTrace();
             return null;
         }

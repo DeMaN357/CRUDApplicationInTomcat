@@ -4,9 +4,10 @@
     <title>Add User</title>
 </head>
 <body>
-<form action="${pageContext.request.contextPath}/AddUser" method="post">
-    Name:<input type="text" name="name"/>
-    Password : <input type="password" name="password"/>
+<form action="${pageContext.request.contextPath}/admin/AddUser" method="post">
+    <p>Name : <input type="text" name="name"/></p>
+    <p>Password : <input type="password" name="password"/></p>
+    <p>Role : <input type="text" name="role" value="user"/></p>
     <input type="submit" value="ADD"/>
 </form>
 </body>

@@ -80,4 +80,17 @@ public class HibernateDAO implements UserDAO {
         session.close();
         return userList.isEmpty() ? null : userList.get(0);
     }
+
+    @Override
+    public User getUserByNameAndPassword(String name, String password) throws SQLException {
+        Session session = sessionFactory.openSession();
+        Transaction transaction = session.beginTransaction();
+        Query<User> userQuery = session.createQuery("from User where name = :name AND password = :password", User.class);
+        userQuery.setParameter("name", name);
+        userQuery.setParameter("password", password);
+        List<User> userList = userQuery.getResultList();
+        transaction.commit();
+        session.close();
+        return userList.isEmpty() ? null : userList.get(0);
+    }
 }

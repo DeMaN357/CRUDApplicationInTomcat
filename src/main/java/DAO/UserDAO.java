@@ -17,4 +17,6 @@ public interface UserDAO {
     boolean checkUser(String name) throws SQLException;
 
     User getUserById(Long id) throws SQLException;
+
+    User getUserByNameAndPassword(String name, String password) throws SQLException;
 }
