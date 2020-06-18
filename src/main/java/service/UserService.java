@@ -1,28 +1,17 @@
 package service;
 
-import DAO.HibernateDAO;
 import DAO.UserDAO;
-import DAO.UserDaoFactory;
-import DAO.UserJdbcDAO;
+import factory.UserDaoFactory;
 import model.User;
-import org.hibernate.SessionFactory;
-import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
-import org.hibernate.cfg.Configuration;
-import org.hibernate.service.ServiceRegistry;
 
-import java.io.IOException;
-import java.sql.Connection;
-import java.sql.Driver;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.List;
-import java.util.Properties;
 
 public class UserService {
 
     private static UserService userService;
 
-    private static UserDAO userDAO;
+    private UserDAO userDAO;
 
     private UserService(UserDAO userDAO) {
         this.userDAO = userDAO;
@@ -30,7 +19,7 @@ public class UserService {
 
     public static UserService getInstance() {
         if (userService == null) {
-            userService = new UserService(UserDaoFactory.getFactory());
+            userService = new UserService(new UserDaoFactory().getDao());
         }
         return userService;
     }
@@ -46,15 +35,13 @@ public class UserService {
 
     public boolean addUser(User user) {
         try {
-            if (userDAO.checkUser(user.getName())) {
-                return false;
-            } else {
+            if (!userDAO.checkUser(user.getName())) {
                 return userDAO.addUser(user);
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            return false;
         }
+        return false;
     }
 
     public void deleteUser(User user) {
@@ -88,11 +75,10 @@ public class UserService {
         }
     }
 
-
     public User getUserByNameAndPassword(String name, String password) {
         try {
             return userDAO.getUserByNameAndPassword(name, password);
-        }catch (SQLException e){
+        } catch (SQLException e) {
             e.printStackTrace();
             return null;
         }

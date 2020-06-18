@@ -10,9 +10,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet(value = "/admin/AddUser")
+@WebServlet("/admin/AddUser")
 public class AddUserServlet extends HttpServlet {
-    UserService userService = UserService.getInstance();
+    private UserService userService = UserService.getInstance();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -25,7 +25,7 @@ public class AddUserServlet extends HttpServlet {
         String password = req.getParameter("password");
         String role = req.getParameter("role");
         if (userService.addUser(new User(name, password, role))) {
-            resp.sendRedirect(getServletContext().getContextPath() + "/admin/AllUsers");
+            resp.sendRedirect("/admin/AllUsers");
         } else {
             resp.getWriter().write("This name already exist!");
         }

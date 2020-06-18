@@ -12,7 +12,6 @@
     <title>Account User</title>
 </head>
 <body>
-    <c:set var="user" value="${user}"/>
     <p> Id: ${user.id}</p>
     <p> Name: ${user.name}</p>
     <p> Password: ${user.password}</p>

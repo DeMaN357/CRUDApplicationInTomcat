@@ -6,8 +6,16 @@
     <title>Main Page</title>
 </head>
 <body>
-<h1>All Users</h1>
+
 <table>
+    <tbody>
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Password</th>
+        <th>Role</th>
+    </tr>
+
     <c:forEach var="users" items="${users}">
         <tr>
             <td>${users.id}</td>
@@ -15,17 +23,15 @@
             <td>${users.password}</td>
             <td>${users.role}</td>
             <td>
-                <a href="${pageContext.request.contextPath}/admin/delete?idToDelete=${users.id}">Delete</a>
-                <a href="${pageContext.request.contextPath}/admin/update?idToUpdate=${users.id}">Update</a>
+                <a href="/admin/delete?idToDelete=${users.id}">Delete</a>
+                <a href="/admin/update?idToUpdate=${users.id}">Update</a>
             </td>
         </tr>
-
     </c:forEach>
+    </tbody>
 </table>
 
-<form action="${pageContext.request.contextPath}/admin/AddUser" method="get">
-    <input type="submit" value="Add User"/>
-</form>
+<a href="/admin/AddUser">Add</a>
 </body>
 </html>
 

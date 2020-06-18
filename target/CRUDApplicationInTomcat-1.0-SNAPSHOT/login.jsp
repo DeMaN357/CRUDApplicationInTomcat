@@ -11,10 +11,10 @@
     <title>Login</title>
 </head>
 <body>
-<form action="${pageContext.request.contextPath}/login" method="post">
-    Enter login <input type="text" name="name"/>
-    Enter password <input type="password" name="password"/>
-    <input type="submit" value="input"/>
+<form action="/login">
+    <p>Enter login <input type="text" name="name"/></p>
+    <p>Enter password <input type="password" name="password"/></p>
+    <p><input type="submit" value="input"/></p>
 </form>
 
 </body>

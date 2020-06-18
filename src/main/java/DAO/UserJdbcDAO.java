@@ -1,6 +1,7 @@
 package DAO;
 
 import model.User;
+import util.DBHelper;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -10,10 +11,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserJdbcDAO implements UserDAO {
+    private static UserJdbcDAO userJdbcDAO;
+
     private Connection connection;
 
-    public UserJdbcDAO(Connection mySqlConnection) {
+    private UserJdbcDAO(Connection mySqlConnection) {
         this.connection = mySqlConnection;
+    }
+
+    public static UserJdbcDAO getInstance() {
+        if (userJdbcDAO == null) {
+            userJdbcDAO = new UserJdbcDAO(DBHelper.getInstance().getMySqlConnection());
+        }
+        return userJdbcDAO;
     }
 
     @Override
@@ -110,7 +120,7 @@ public class UserJdbcDAO implements UserDAO {
             String name1 = resultSet.getString("name");
             String password2 = resultSet.getString("password");
             String role = resultSet.getString("role");
-            return new User(id,name1,password2,role);
+            return new User(id, name1, password2, role);
         }
     }
 }

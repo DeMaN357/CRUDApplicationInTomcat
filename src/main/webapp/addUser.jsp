@@ -4,7 +4,7 @@
     <title>Add User</title>
 </head>
 <body>
-<form action="${pageContext.request.contextPath}/admin/AddUser" method="post">
+<form action="/admin/AddUser" method="post">
     <p>Name : <input type="text" name="name"/></p>
     <p>Password : <input type="password" name="password"/></p>
     <p>Role : <input type="text" name="role" value="user"/></p>

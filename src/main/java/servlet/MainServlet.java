@@ -12,9 +12,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-@WebServlet(value = "/admin/AllUsers")
+@WebServlet("/admin/AllUsers")
 public class MainServlet extends HttpServlet {
-    UserService userService = UserService.getInstance();
+    private UserService userService = UserService.getInstance();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
